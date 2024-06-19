@@ -13,11 +13,11 @@ export default function DifficultySelector() {
   const { replace } = useRouter();
   const params = useSearchParams();
   const pathname = usePathname();
-  const selected = params.get("dificult");
+  const selected = params.get("difficulty");
 
-  function handleButtonClick(dificult: string) {
+  function handleButtonClick(difficulty: string) {
     const query = new URLSearchParams(params);
-    query.set("dificult", dificult);
+    query.set("difficulty", difficulty);
 
     replace(`${pathname}?${query.toString()}`);
   }
@@ -39,9 +39,6 @@ export default function DifficultySelector() {
           />
         );
       })}
-      {/* <Button label="Fácil" selected={selected === "easy"} onClick={() => handleButtonClick("")} />
-      <Button label="Médio" selected={selected === "medium"} />
-      <Button label="Difícil" selected={selected === "hard"} /> */}
     </div>
   );
 }
