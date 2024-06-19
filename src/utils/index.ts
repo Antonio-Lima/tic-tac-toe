@@ -1,10 +1,14 @@
-import { DifficultyType, GamePositionStatus } from "@/@types";
+import { DifficultyType, GamePositionStatus, ResultType } from "@/@types";
 
 export function gameStatus(
   grid: Array<Array<GamePositionStatus>>
-): "player" | "bot" | "" {
+): ResultType | "" {
   if (checkWin(grid, GamePositionStatus.Player)) return "player";
   if (checkWin(grid, GamePositionStatus.Bot)) return "bot";
+  if (
+    grid.every((row) => row.every((cell) => cell !== GamePositionStatus.Empty))
+  )
+    return "draw";
   return "";
 }
 
@@ -56,7 +60,6 @@ function computerMove(
   grid: Array<Array<GamePositionStatus>>,
   difficulty: DifficultyType
 ): MoveType | null {
-  console.log(difficulty);
   switch (difficulty) {
     case "easy":
       return easyMove(grid);
@@ -83,7 +86,6 @@ function easyMove(grid: Array<Array<GamePositionStatus>>): MoveType | null {
 }
 
 function mediumMove(grid: Array<Array<GamePositionStatus>>): MoveType | null {
-  // Primeiro, verifica se o bot pode vencer na próxima jogada
   for (let row = 0; row < 3; row++) {
     for (let col = 0; col < 3; col++) {
       if (grid[row][col] === GamePositionStatus.Empty) {
@@ -96,7 +98,6 @@ function mediumMove(grid: Array<Array<GamePositionStatus>>): MoveType | null {
     }
   }
 
-  // Segundo, verifica se o jogador pode vencer na próxima jogada e bloqueia
   for (let row = 0; row < 3; row++) {
     for (let col = 0; col < 3; col++) {
       if (grid[row][col] === GamePositionStatus.Empty) {
@@ -109,7 +110,6 @@ function mediumMove(grid: Array<Array<GamePositionStatus>>): MoveType | null {
     }
   }
 
-  // Se nenhum dos casos acima, faz um movimento aleatório
   return easyMove(grid);
 }
 

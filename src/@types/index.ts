@@ -5,3 +5,5 @@ export enum GamePositionStatus {
 }
 
 export type DifficultyType = "easy" | "medium" | "hard";
+
+export type ResultType = "player" | "bot" | "draw";

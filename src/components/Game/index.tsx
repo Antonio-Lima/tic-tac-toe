@@ -1,9 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
-
 import { useSearchParams } from "next/navigation";
+import { FaRegCircle, FaX } from "react-icons/fa6";
+
 import { gameStatus, move } from "@/utils";
-import { DifficultyType, GamePositionStatus } from "@/@types/index";
+import { DifficultyType, GamePositionStatus, ResultType } from "@/@types/index";
+import ResultModal from "../ResultModal";
 
 const newGameGrid: Array<Array<GamePositionStatus>> = [
   [0, 0, 0],
@@ -19,6 +21,8 @@ export default function Game() {
 
   const [playerTime, setPlayerTime] = useState(true);
 
+  const [result, setResult] = useState<ResultType | "">("");
+
   function handlePlayerMove(row: number, column: number) {
     if (gameGrid[row][column] === 0) {
       setGameGrid(
@@ -28,17 +32,26 @@ export default function Game() {
     }
   }
 
+  function startNewGame() {
+    setGameGrid(newGameGrid);
+    setPlayerTime(true);
+    setResult("");
+  }
+
   useEffect(() => {
     const winner = gameStatus(gameGrid);
-    if (winner) {
-      console.log(winner);
-    } else {
+    if (winner) setResult(winner);
+    else {
       if (!playerTime) {
         setGameGrid(move(gameGrid, "bot", { row: 0, column: 0 }, difficulty));
         setPlayerTime(true);
       }
     }
   }, [gameGrid, playerTime, difficulty]);
+
+  useEffect(() => {
+    setGameGrid(newGameGrid);
+  }, [difficulty]);
 
   return (
     <>
@@ -47,7 +60,7 @@ export default function Game() {
           row.map((col, colIndex) => (
             <div
               key={`${rowIndex}-${colIndex}`}
-              className={`border border-black w-full h-full flex items-center justify-center
+              className={`relative border border-black w-full h-full flex items-center justify-center
               ${rowIndex === 0 ? "border-t-0" : ""}
               ${colIndex === 0 ? "border-l-0" : ""}
               ${rowIndex === gameGrid.length - 1 ? "border-b-0" : ""}
@@ -55,14 +68,17 @@ export default function Game() {
             `}
               onClick={() => handlePlayerMove(rowIndex, colIndex)}
             >
-              <button className="flex w-full h-full justify-center items-center">
-                {gameGrid[rowIndex][colIndex] === 1 && <p>x</p>}
-                {gameGrid[rowIndex][colIndex] === 2 && <p>o</p>}
+              <button className="absolute top-0 bottom-0 flex w-full h-full justify-center items-center">
+                {gameGrid[rowIndex][colIndex] === 1 && <FaX size={56} />}
+                {gameGrid[rowIndex][colIndex] === 2 && (
+                  <FaRegCircle size={56} />
+                )}
               </button>
             </div>
           ))
         )}
       </div>
+      {result && <ResultModal winner={result} close={startNewGame} />}
     </>
   );
 }
