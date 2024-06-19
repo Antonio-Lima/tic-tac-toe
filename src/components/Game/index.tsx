@@ -55,7 +55,7 @@ export default function Game() {
 
   return (
     <>
-      <div className="w-full max-w-3xl aspect-square grid grid-cols-3">
+      <div className="w-full max-w-xl aspect-square grid grid-cols-3">
         {gameGrid.map((row, rowIndex) =>
           row.map((col, colIndex) => (
             <div
