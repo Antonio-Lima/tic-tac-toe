@@ -28,7 +28,10 @@ export default function DifficultySelector() {
   }, [selected]);
 
   return (
-    <div className="flex gap-5">
+    <div className="flex gap-5 items-center justify-center">
+      <h2 className="font-medium text-lg text-gray-600">
+        Selecione a dificuldade:
+      </h2>
       {options.map((item, index) => {
         return (
           <Button
