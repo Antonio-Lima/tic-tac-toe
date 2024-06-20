@@ -43,8 +43,10 @@ export default function Game() {
     if (winner) setResult(winner);
     else {
       if (!playerTime) {
-        setGameGrid(move(gameGrid, "bot", { row: 0, column: 0 }, difficulty));
-        setPlayerTime(true);
+        setTimeout(() => {
+          setGameGrid(move(gameGrid, "bot", { row: 0, column: 0 }, difficulty));
+          setPlayerTime(true);
+        }, 500);
       }
     }
   }, [gameGrid, playerTime, difficulty]);
@@ -68,7 +70,10 @@ export default function Game() {
             `}
               onClick={() => handlePlayerMove(rowIndex, colIndex)}
             >
-              <button className="absolute top-0 bottom-0 flex w-full h-full justify-center items-center">
+              <button
+                className="absolute top-0 bottom-0 flex w-full h-full justify-center items-center"
+                disabled={!playerTime}
+              >
                 {gameGrid[rowIndex][colIndex] === 1 && (
                   <FaX size={56} className="dark:text-white" />
                 )}
