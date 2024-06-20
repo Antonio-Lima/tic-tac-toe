@@ -60,7 +60,7 @@ export default function Game() {
           row.map((col, colIndex) => (
             <div
               key={`${rowIndex}-${colIndex}`}
-              className={`relative border border-black w-full h-full flex items-center justify-center
+              className={`relative border border-black dark:border-white w-full h-full flex items-center justify-center
               ${rowIndex === 0 ? "border-t-0" : ""}
               ${colIndex === 0 ? "border-l-0" : ""}
               ${rowIndex === gameGrid.length - 1 ? "border-b-0" : ""}
@@ -69,9 +69,11 @@ export default function Game() {
               onClick={() => handlePlayerMove(rowIndex, colIndex)}
             >
               <button className="absolute top-0 bottom-0 flex w-full h-full justify-center items-center">
-                {gameGrid[rowIndex][colIndex] === 1 && <FaX size={56} />}
+                {gameGrid[rowIndex][colIndex] === 1 && (
+                  <FaX size={56} className="dark:text-white" />
+                )}
                 {gameGrid[rowIndex][colIndex] === 2 && (
-                  <FaRegCircle size={56} />
+                  <FaRegCircle size={56} className="dark:text-white" />
                 )}
               </button>
             </div>
